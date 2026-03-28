@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبة AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f1a;
+  --bg2: #13162a;
+  --bg3: #1a1e35;
+  --card: #1e2340;
+  --card-hover: #252b4a;
+  --border: #2e3560;
+  --border-light: #3d4575;
+  --accent: #6c63ff;
+  --accent2: #ff6584;
+  --accent3: #43e97b;
+  --accent4: #f9ca24;
+  --accent5: #38bdf8;
+  --text: #e8eaf6;
+  --text2: #9fa8da;
+  --text3: #5c6bc0;
+  --tag-bg: rgba(108,99,255,0.15);
+  --glass: rgba(13,15,26,0.85);
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --radius: 16px;
+}
+.light {
+  --bg: #f0f2ff;
+  --bg2: #e8eaf6;
+  --bg3: #ffffff;
+  --card: #ffffff;
+  --card-hover: #f5f6ff;
+  --border: #c5cae9;
+  --border-light: #9fa8da;
+  --text: #1a1e35;
+  --text2: #3949ab;
+  --text3: #7986cb;
+  --tag-bg: rgba(108,99,255,0.10);
+  --glass: rgba(240,242,255,0.92);
+  --shadow: 0 8px 32px rgba(108,99,255,0.10);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;transition:background .3s,color .3s;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 15%,rgba(108,99,255,.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 85%,rgba(255,101,132,.07) 0%,transparent 55%),radial-gradient(ellipse at 50% 50%,rgba(67,233,123,.04) 0%,transparent 65%);pointer-events:none;z-index:0;}
+
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:100;background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 15px rgba(108,99,255,.35);flex-shrink:0;}
+.logo-text{font-size:18px;font-weight:900;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-sub{font-size:10px;color:var(--text3);display:block;margin-top:-3px;}
+.search-wrap{position:relative;flex:1;max-width:360px;min-width:180px;}
+.search-wrap input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:9px 42px 9px 14px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:all .2s;}
+.search-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,99,255,.18);}
+.search-wrap input::placeholder{color:var(--text3);}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:15px;}
+.header-actions{display:flex;align-items:center;gap:10px;margin-right:auto;}
+.btn{display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;transition:all .2s;white-space:nowrap;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;box-shadow:0 4px 14px rgba(108,99,255,.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(108,99,255,.4);}
+.btn-ghost{background:var(--card);color:var(--text2);border:1px solid var(--border);}
+.btn-ghost:hover{background:var(--card-hover);color:var(--text);}
+.theme-toggle{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .2s;}
+.theme-toggle:hover{transform:rotate(20deg);}
+
+/* ── TABS ── */
+.tabs-bar{position:sticky;top:71px;z-index:90;background:var(--glass);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;display:flex;gap:4px;}
+.tab-btn{padding:14px 22px;border:none;background:transparent;color:var(--text3);font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.tab-btn:hover{color:var(--text2);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-count{font-size:11px;background:var(--tag-bg);color:var(--accent);border-radius:20px;padding:2px 8px;font-weight:700;}
+
+/* ── MAIN ── */
+main{position:relative;z-index:1;padding:28px;max-width:1400px;margin:0 auto;}
+.tab-section{display:none;}
+.tab-section.active{display:block;}
+
+/* ── STATS ── */
+.stats-bar{display:flex;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 20px;display:flex;align-items:center;gap:10px;flex:1;min-width:130px;}
+.stat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.si-purple{background:rgba(108,99,255,.15);}
+.si-pink{background:rgba(255,101,132,.15);}
+.si-green{background:rgba(67,233,123,.15);}
+.si-blue{background:rgba(56,189,248,.15);}
+.si-yellow{background:rgba(249,202,36,.15);}
+.stat-num{font-size:20px;font-weight:900;color:var(--text);}
+.stat-label{font-size:11px;color:var(--text3);}
+
+/* ── FILTERS ── */
+.filters{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;align-items:center;}
+.filter-label{color:var(--text3);font-size:12px;}
+.filter-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:'Cairo',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;}
+.filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+.filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(108,99,255,.3);}
+.view-toggle{display:flex;gap:3px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:3px;margin-right:auto;}
+.view-btn{width:30px;height:30px;border-radius:7px;border:none;background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
+.view-btn.active{background:var(--accent);color:#fff;}
+
+/* ── GRID ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px;}
+.cards-grid.list-view{grid-template-columns:1fr;}
+
+/* ── PROMPT CARD ── */
+/* ── PROMPT CARD ── */
+.prompt-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s;cursor:pointer;position:relative;animation:fadeUp .4s ease both;display:flex;flex-direction:column;}
+.prompt-card:hover{border-color:var(--border-light);transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.35);}
+.card-img-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--bg2);flex-shrink:0;}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+.prompt-card:hover .card-img-wrap img{transform:scale(1.06);}
+.card-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,var(--bg3),var(--bg2));}
+.card-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.5));pointer-events:none;}
+.card-tool-badge{position:absolute;top:10px;right:10px;font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid;font-weight:700;backdrop-filter:blur(8px);}
+.card-header{padding:14px 16px 6px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.card-num{font-size:10px;font-weight:700;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:2px 7px;flex-shrink:0;}
+.card-title{font-size:15px;font-weight:900;color:var(--text);flex:1;line-height:1.4;}
+.card-body{padding:0 16px 12px;flex:1;}
+.card-purpose{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-prompt-preview{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 13px;margin-bottom:10px;font-size:11px;color:var(--text2);line-height:1.6;direction:ltr;text-align:left;font-family:'Tajawal',monospace;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;position:relative;}
+.card-prompt-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(transparent,var(--bg2));}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.tag{font-size:10px;padding:2px 9px;border-radius:20px;background:var(--tag-bg);color:var(--accent);border:1px solid rgba(108,99,255,.2);font-weight:700;}
+.card-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:7px;margin-top:auto;}
+.copy-btn{display:flex;align-items:center;gap:5px;padding:8px 13px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;flex:1;justify-content:center;}
+.copy-btn:hover{transform:scale(1.03);box-shadow:0 4px 12px rgba(108,99,255,.4);}
+.copy-btn.copied{background:linear-gradient(135deg,var(--accent3),#10b981);}
+.expand-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;}
+.expand-btn:hover{background:var(--card-hover);color:var(--text);}
+.img-upload-wrap{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.img-upload-wrap:hover{border-color:var(--accent);background:var(--tag-bg);}
+.img-upload-wrap input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.img-preview{width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin-top:10px;display:none;}
+
+/* ── RESOURCE CARD ── */
+.resource-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s;cursor:pointer;position:relative;animation:fadeUp .4s ease both;}
+.resource-card:hover{border-color:var(--border-light);background:var(--card-hover);transform:translateY(-4px);box-shadow:var(--shadow);}
+.resource-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .2s;}
+.resource-card:hover::before{opacity:1;}
+.resource-card[data-type="pdf"]::before{background:linear-gradient(90deg,#ff6584,#ff8fab);}
+.resource-card[data-type="image"]::before{background:linear-gradient(90deg,#43e97b,#38bdf8);}
+.resource-card[data-type="video"]::before{background:linear-gradient(90deg,#f9ca24,#f0932b);}
+.resource-card[data-type="note"]::before{background:linear-gradient(90deg,#6c63ff,#8b5cf6);}
+
+.res-top{padding:16px 18px 12px;display:flex;align-items:flex-start;gap:12px;}
+.res-type-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.res-type-icon.pdf{background:rgba(255,101,132,.15);}
+.res-type-icon.image{background:rgba(67,233,123,.15);}
+.res-type-icon.video{background:rgba(249,202,36,.15);}
+.res-type-icon.note{background:rgba(108,99,255,.15);}
+.res-info{flex:1;}
+.res-title{font-size:15px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:4px;}
+.res-meta{font-size:11px;color:var(--text3);display:flex;gap:10px;flex-wrap:wrap;}
+.res-desc{padding:0 18px 14px;font-size:12px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.res-footer{padding:10px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:7px;}
+.res-link-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:8px;border:none;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;flex:1;justify-content:center;text-decoration:none;}
+.res-link-btn.pdf-btn{background:rgba(255,101,132,.15);color:#ff6584;border:1px solid rgba(255,101,132,.3);}
+.res-link-btn.pdf-btn:hover{background:rgba(255,101,132,.25);}
+.res-link-btn.img-btn{background:rgba(67,233,123,.15);color:#43e97b;border:1px solid rgba(67,233,123,.3);}
+.res-link-btn.img-btn:hover{background:rgba(67,233,123,.25);}
+.res-link-btn.vid-btn{background:rgba(249,202,36,.15);color:#f9ca24;border:1px solid rgba(249,202,36,.3);}
+.res-link-btn.vid-btn:hover{background:rgba(249,202,36,.25);}
+.res-link-btn.note-btn{background:rgba(108,99,255,.15);color:var(--accent);border:1px solid rgba(108,99,255,.3);}
+.res-link-btn.note-btn:hover{background:rgba(108,99,255,.25);}
+
+/* ── TYPE FILTER PILLS ── */
+.type-pill{display:flex;align-items:center;gap:5px;}
+.type-pill-dot{width:8px;height:8px;border-radius:50%;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--bg2);border:1px solid var(--border-light);border-radius:20px;width:100%;max-width:660px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 80px rgba(0,0,0,.5);transform:scale(.95);transition:transform .2s;}
+.modal-overlay.open .modal{transform:scale(1);}
+.modal-header{padding:22px 26px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:14px;position:sticky;top:0;background:var(--bg2);z-index:1;}
+.modal-title{font-size:19px;font-weight:900;color:var(--text);}
+.modal-close{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.modal-close:hover{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+.modal-body{padding:22px 26px;}
+.modal-section{margin-bottom:18px;}
+.modal-section-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+.modal-prompt-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:13px;color:var(--text2);line-height:1.7;direction:ltr;text-align:left;font-family:'Tajawal',monospace;white-space:pre-wrap;word-break:break-word;}
+.modal-text{font-size:13px;color:var(--text2);line-height:1.7;}
+.modal-footer{padding:14px 26px 22px;display:flex;gap:9px;}
+.modal-copy-btn{flex:1;padding:11px 18px;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;border:none;border-radius:12px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.modal-copy-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(108,99,255,.4);}
+.modal-copy-btn.copied{background:linear-gradient(135deg,var(--accent3),#10b981);}
+
+/* ── ADD PANEL ── */
+.add-panel{position:fixed;top:0;left:0;width:420px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);z-index:150;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease;box-shadow:8px 0 30px rgba(0,0,0,.3);}
+.add-panel.open{transform:translateX(0);}
+.panel-header{padding:22px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1;}
+.panel-title{font-size:17px;font-weight:900;color:var(--text);}
+.panel-body{padding:18px 22px;}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:5px;}
+.form-input,.form-textarea,.form-select{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 13px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:all .2s;resize:vertical;}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,99,255,.13);}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text3);}
+.form-textarea{min-height:90px;}
+.form-select option{background:var(--bg2);}
+.type-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.type-opt{padding:10px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--text2);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.type-opt:hover{border-color:var(--border-light);}
+.type-opt.selected{border-color:var(--accent);background:var(--tag-bg);color:var(--accent);}
+.type-opt-icon{font-size:22px;}
+.save-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;border:none;border-radius:12px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:6px;}
+.save-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(108,99,255,.4);}
+.panel-tabs{display:flex;gap:3px;background:var(--bg3);border-radius:10px;padding:3px;margin-bottom:18px;}
+.panel-tab{flex:1;padding:8px;border:none;background:transparent;color:var(--text3);font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border-radius:8px;transition:all .2s;}
+.panel-tab.active{background:var(--accent);color:#fff;}
+
+/* ── EMPTY / NO RESULTS ── */
+.empty-state{text-align:center;padding:70px 20px;display:none;}
+.empty-state.show{display:block;}
+.no-results{grid-column:1/-1;text-align:center;padding:55px 20px;display:none;}
+.no-results.show{display:block;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent3);color:#fff;padding:11px 22px;border-radius:12px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:all .3s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── NOTE VIEWER ── */
+.note-content-area{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:13px;color:var(--text2);line-height:1.8;white-space:pre-wrap;max-height:300px;overflow-y:auto;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.cards-grid .prompt-card:nth-child(1),.cards-grid .resource-card:nth-child(1){animation-delay:.05s;}
+.cards-grid .prompt-card:nth-child(2),.cards-grid .resource-card:nth-child(2){animation-delay:.10s;}
+.cards-grid .prompt-card:nth-child(3),.cards-grid .resource-card:nth-child(3){animation-delay:.15s;}
+.cards-grid .prompt-card:nth-child(4),.cards-grid .resource-card:nth-child(4){animation-delay:.20s;}
+.cards-grid .prompt-card:nth-child(5),.cards-grid .resource-card:nth-child(5){animation-delay:.25s;}
+.cards-grid .prompt-card:nth-child(6),.cards-grid .resource-card:nth-child(6){animation-delay:.30s;}
+
+.list-view .res-desc{-webkit-line-clamp:1;}
+
+@media(max-width:640px){
+  header{padding:10px 14px;}
+  .tabs-bar{padding:0 14px;}
+  main{padding:18px 14px;}
+  .add-panel{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-icon">✨</div>
+    <div>
+      <div class="logo-text">مكتبة AI</div>
+      <span class="logo-sub">AI Resource Library</span>
+    </div>
+  </a>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="ابحث..." oninput="renderAll()">
+    <span class="search-icon">🔍</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-primary" id="addBtn" onclick="openPanel()">➕ إضافة</button>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('prompts',this)">
+    ✍️ البرومبتات <span class="tab-count" id="tab-count-prompts">0</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('library',this)">
+    📚 المكتبة <span class="tab-count" id="tab-count-library">0</span>
+  </button>
+</div>
+
+<main>
+
+  <!-- ══ PROMPTS TAB ══ -->
+  <div class="tab-section active" id="tab-prompts">
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-icon si-purple">✍️</div><div><div class="stat-num" id="p-total">0</div><div class="stat-label">برومبت</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-pink">🏷️</div><div><div class="stat-num" id="p-cats">0</div><div class="stat-label">فئة</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-green">🛠️</div><div><div class="stat-num" id="p-tools">0</div><div class="stat-label">أداة</div></div></div>
+    </div>
+    <div class="filters" id="p-filters">
+      <span class="filter-label">الفئة:</span>
+      <button class="filter-btn active" onclick="setPFilter('all',this)">الكل</button>
+      <div class="view-toggle" style="margin-right:auto;">
+        <button class="view-btn active" onclick="setPView('grid',this)">⊞</button>
+        <button class="view-btn" onclick="setPView('list',this)">☰</button>
+      </div>
+    </div>
+    <div class="cards-grid" id="promptsGrid"></div>
+    <div class="empty-state" id="p-empty"><div style="font-size:56px;margin-bottom:14px;">✍️</div><div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">مفيش برومبتات لسه!</div><div style="font-size:13px;color:var(--text3);">ضغط "إضافة" عشان تبدأ</div></div>
+    <div class="no-results" id="p-nores"><div style="font-size:42px;margin-bottom:10px;">🔍</div><div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px;">مفيش نتايج</div><div style="font-size:12px;color:var(--text3);">جرب كلمة تانية</div></div>
+  </div>
+
+  <!-- ══ LIBRARY TAB ══ -->
+  <div class="tab-section" id="tab-library">
+    <div class="stats-bar">
+      <div class="stat-card"><div class="stat-icon si-pink">📄</div><div><div class="stat-num" id="l-pdf">0</div><div class="stat-label">PDF</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-green">🖼️</div><div><div class="stat-num" id="l-img">0</div><div class="stat-label">صورة</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-yellow">🎬</div><div><div class="stat-num" id="l-vid">0</div><div class="stat-label">فيديو</div></div></div>
+      <div class="stat-card"><div class="stat-icon si-purple">📝</div><div><div class="stat-num" id="l-note">0</div><div class="stat-label">ملاحظة</div></div></div>
+    </div>
+    <div class="filters" id="l-filters">
+      <span class="filter-label">النوع:</span>
+      <button class="filter-btn active" onclick="setLFilter('all',this)">الكل</button>
+      <button class="filter-btn" onclick="setLFilter('pdf',this)">📄 PDF</button>
+      <button class="filter-btn" onclick="setLFilter('image',this)">🖼️ صور</button>
+      <button class="filter-btn" onclick="setLFilter('video',this)">🎬 فيديو</button>
+      <button class="filter-btn" onclick="setLFilter('note',this)">📝 ملاحظات</button>
+      <div class="view-toggle" style="margin-right:auto;">
+        <button class="view-btn active" onclick="setLView('grid',this)">⊞</button>
+        <button class="view-btn" onclick="setLView('list',this)">☰</button>
+      </div>
+    </div>
+    <div class="cards-grid" id="libraryGrid"></div>
+    <div class="empty-state" id="l-empty"><div style="font-size:56px;margin-bottom:14px;">📚</div><div style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;">المكتبة فاضية!</div><div style="font-size:13px;color:var(--text3);">ضغط "إضافة" واختار "مكتبة"</div></div>
+    <div class="no-results" id="l-nores"><div style="font-size:42px;margin-bottom:10px;">🔍</div><div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px;">مفيش نتايج</div><div style="font-size:12px;color:var(--text3);">جرب كلمة تانية</div></div>
+  </div>
+
+</main>
+
+<!-- ══ ADD PANEL ══ -->
+<div class="add-panel" id="addPanel">
+  <div class="panel-header">
+    <div class="panel-title" id="panelTitle">➕ إضافة جديد</div>
+    <button class="modal-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body">
+    <div class="panel-tabs">
+      <button class="panel-tab active" id="ptab-prompt" onclick="switchPanelTab('prompt')">✍️ برومبت</button>
+      <button class="panel-tab" id="ptab-resource" onclick="switchPanelTab('resource')">📚 مكتبة</button>
+    </div>
+
+    <!-- PROMPT FORM -->
+    <div id="form-prompt">
+      <div class="form-group"><label class="form-label">صورة البرومبت</label>
+        <div class="img-upload-wrap" onclick="document.getElementById('f-image-input').click()">
+          <input type="file" id="f-image-input" accept="image/*" style="display:none" onchange="previewImg(this)">
+          <div id="f-img-placeholder">🖼️<br><span style="font-size:11px;color:var(--text3)">اضغط لرفع صورة</span></div>
+          <img id="f-image-preview" class="img-preview" alt="preview">
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">اسم البرومبت *</label><input type="text" class="form-input" id="f-title" placeholder="مثال: Minimalist Logo"></div>
+      <div class="form-group"><label class="form-label">الفئة *</label><input type="text" class="form-input" id="f-category" placeholder="Logos, Social Media, UI..."></div>
+      <div class="form-group"><label class="form-label">الأداة</label><input type="text" class="form-input" id="f-tool" placeholder="Midjourney, DALL-E, Firefly..."></div>
+      <div class="form-group"><label class="form-label">الغرض</label><input type="text" class="form-input" id="f-purpose" placeholder="البرومبت ده بيعمل إيه؟"></div>
+      <div class="form-group"><label class="form-label">البرومبت *</label><textarea class="form-textarea" id="f-prompt" placeholder="اكتب البرومبت هنا..." style="min-height:130px;direction:ltr;text-align:left;"></textarea></div>
+      <div class="form-group"><label class="form-label">تيبس</label><textarea class="form-textarea" id="f-tips" placeholder="ملاحظات مهمة..." style="min-height:70px;direction:rtl;text-align:right;"></textarea></div>
+      <div class="form-group"><label class="form-label">تاجات (بفاصلة)</label><input type="text" class="form-input" id="f-tags" placeholder="minimal, dark, 3D..."></div>
+      <button class="save-btn" onclick="savePrompt()">💾 حفظ البرومبت</button>
+    </div>
+
+    <!-- RESOURCE FORM -->
+    <div id="form-resource" style="display:none;">
+      <div class="form-group"><label class="form-label">نوع المحتوى *</label>
+        <div class="type-selector">
+          <button class="type-opt selected" data-type="pdf" onclick="selectType('pdf',this)"><span class="type-opt-icon">📄</span>PDF / ملف</button>
+          <button class="type-opt" data-type="image" onclick="selectType('image',this)"><span class="type-opt-icon">🖼️</span>صورة / إنفو</button>
+          <button class="type-opt" data-type="video" onclick="selectType('video',this)"><span class="type-opt-icon">🎬</span>فيديو</button>
+          <button class="type-opt" data-type="note" onclick="selectType('note',this)"><span class="type-opt-icon">📝</span>ملاحظة نص</button>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">العنوان *</label><input type="text" class="form-input" id="r-title" placeholder="اسم الملف أو الدرس"></div>
+      <div class="form-group"><label class="form-label">الوصف</label><input type="text" class="form-input" id="r-desc" placeholder="وصف مختصر"></div>
+      <div class="form-group"><label class="form-label">الفئة</label><input type="text" class="form-input" id="r-category" placeholder="Midjourney, ChatGPT, عام..."></div>
+      <div id="link-field" class="form-group"><label class="form-label">الرابط (Google Drive / YouTube...)</label><input type="text" class="form-input" id="r-link" placeholder="https://..."></div>
+      <div id="note-field" class="form-group" style="display:none;"><label class="form-label">محتوى الملاحظة *</label><textarea class="form-textarea" id="r-note" placeholder="اكتب ملاحظاتك هنا..." style="min-height:120px;direction:rtl;text-align:right;"></textarea></div>
+      <div class="form-group"><label class="form-label">تاجات (بفاصلة)</label><input type="text" class="form-input" id="r-tags" placeholder="guide, tips, AI..."></div>
+      <button class="save-btn" onclick="saveResource()">💾 حفظ في المكتبة</button>
+    </div>
+
+    <div id="editId" style="display:none;"></div>
+    <div id="editType" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title"></div>
+        <div style="margin-top:6px;display:flex;gap:7px;flex-wrap:wrap;" id="modal-meta"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ تم!</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────
+let prompts  = JSON.parse(localStorage.getItem('ai_prompts')  || '[]');
+let resources= JSON.parse(localStorage.getItem('ai_resources')|| '[]');
+
+let pFilter='all', lFilter='all', pView='grid', lView='grid';
+let currentTab='prompts', currentModalId=null, currentModalKind=null;
+let selectedType='pdf', panelTabMode='prompt';
+
+function save(){
+  localStorage.setItem('ai_prompts',  JSON.stringify(prompts));
+  localStorage.setItem('ai_resources',JSON.stringify(resources));
+}
+
+function now(){ return new Date().toLocaleDateString('ar-EG'); }
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── SEED DATA ────────────────────────────────────────────────────────────
+(function mergeSeed(){
+  const SEED=[
+    // ── Product Prompts ──
+    {id:3,title:"Perfume – Ocean Cinematic Ad",category:"Product Photography",tool:"Midjourney / DALL-E",purpose:"إعلان سينمائي لعطر في إعداد المحيط",prompt:"CREATE A HYPER-REALISTIC, CINEMATIC IMAGE OF A PERFUME BOTTLE PLACED GENTLY IN AN OCEAN SETTING. SURROUND IT WITH SOFTLY FLOATING FLOWERS LIKE COSMOS, ROSES, AND DAISIES, DRIFTING ON GENTLE WATER RIPPLES UNDER A GLOWING, GOLDEN SUNSET. THE WATER SHOULD BE A SERENE, QUIET BLUE WITH SHIMMERING HIGHLIGHTS, REFLECTING SOFT SUNLIGHT. USE A TELEPHOTO SONY LENS PERSPECTIVE WITH SHALLOW DEPTH OF FIELD, CAPTURING INTRICATE REFLECTIONS ON THE GLASS BOTTLE AND DETAILED TEXTURES ON THE PETALS. LET LIGHT BEAMS AND BOKEH EFFECTS ENHANCE THE DREAMY ATMOSPHERE. EMPHASIZE GOLDEN SECTION COMPOSITION, COMMERCIAL PHOTOGRAPHY STYLE, AND ULTRA-HIGH RESOLUTION (32K). NO TEXT OR BRANDING OVERLAYS",tips:"استبدل الوصف العام بصورة منتجك الفعلي للحصول على نتيجة دقيقة.",tags:["perfume","cinematic","ocean","product"],created:now()},
+    {id:4,title:"Coffee – Cinematic Cafe Scene",category:"Product Photography",tool:"Midjourney / DALL-E",purpose:"مشهد سينمائي لمنتج قهوة في أجواء كافيه",prompt:"SCENE SETUP: PLACE A CENTRAL PRODUCT POUCH (YOUR UPLOADED PRODUCT IMAGE) STANDING UPRIGHT ON A DARK WOODEN SURFACE. SURROUND THE BASE WITH SCATTERED ROASTED COFFEE BEANS FOR A RICH, TACTILE FEEL. ADD A WOODEN SPOON FILLED WITH COFFEE BEANS PLACED ARTISTICALLY IN FRONT OF THE PRODUCT, SLIGHTLY LEANING TOWARD THE VIEWER.\n\nBACKGROUND: USE A SOFTLY BLURRED KITCHEN OR CAFE BACKDROP WITH DARK WOOD SHELVES, POTTED PLANTS, CERAMIC JARS, AND VINTAGE CONTAINERS. BACKGROUND SHOULD HAVE A COZY, ARTISANAL AESTHETIC WITH A HINT OF MODERN-RUSTIC INTERIOR STYLING.\n\nLIGHTING: USE WARM, DIFFUSED, DIRECTIONAL LIGHTING FROM THE SIDE TO CREATE A NATURAL GOLDEN-HOUR GLOW WITH SOFT SHADOWS AND HIGHLIGHTS. EMPHASIZE THE TEXTURE OF THE PACKAGING AND THE GLOSSINESS OF THE COFFEE BEANS.\n\nFOCUS & STYLE: SHALLOW DEPTH OF FIELD TO KEEP THE PRODUCT SHARP WHILE SOFTLY BLURRING THE BACKGROUND. CLEAN, MINIMAL, SLIGHTLY CINEMATIC TONE. COLOR GRADING SHOULD HAVE EARTHY BROWNS, DEEP SHADOWS, AND WARM HIGHLIGHTS.\n\nASPECT RATIO: 4:5 VERTICAL (INSTAGRAM-FRIENDLY FORMAT)\nMOOD: WARM, PREMIUM, GROUNDED, SENSORY-RICH – EVOKING THE AROMA AND CRAFTSMANSHIP OF SPECIALTY COFFEE.",tips:"ارفع صورة عبوة منتجك للحصول على نتيجة واقعية.",tags:["coffee","cafe","cinematic","product","instagram"],created:now()},
+    {id:5,title:"Jewelry – Luxury Silk Scene",category:"Product Photography",tool:"Midjourney / DALL-E",purpose:"تصوير مجوهرات فاخر على خلفية حرير",prompt:"ULTRA-REALISTIC LUXURY PRODUCT PHOTOGRAPHY. PLACE [YOUR PRODUCT IMAGE] AT THE CENTER ON A DEEP MAROON SILK FABRIC BACKGROUND. SURROUND THE PRODUCT WITH DELICATE DECORATIVE ELEMENTS SUCH AS SMALL JASMINE BUDS AND CARVED WOODEN ACCENT, ADDING A TRADITIONAL AND PREMIUM TOUCH. LIGHTING IS WARM AND SOFT, HIGHLIGHTING THE INTRICATE TEXTURES OF THE PRODUCT AND THE SHIMMERING SILK FABRIC. THE OVERALL MOOD IS RICH, FESTIVE, AND REGAL, WITH HIGH ATTENTION TO DETAIL. CAPTURE SHARP FOCUS ON THE PRODUCT WITH A SHALLOW DEPTH OF FIELD TO KEEP THE BACKGROUND SLIGHTLY BLURRED.\n\nSTYLE: ULTRA-DETAILED, CINEMATIC, PREMIUM LUXURY LOOK.\nRESOLUTION: HIGH DETAIL, 8K.\nASPECT RATIO: 1:1 (SQUARE, INSTAGRAM-FRIENDLY).",tips:"استبدل [YOUR PRODUCT IMAGE] بصورة المنتج الفعلية.",tags:["jewelry","luxury","silk","product","8k"],created:now()},
+    {id:6,title:"Handbag – Fashion Cinematic Scene",category:"Product Photography",tool:"Midjourney / DALL-E",purpose:"مشهد سينمائي فاخر لحقيبة يد",prompt:"Realistic product scene featuring a luxury handbag (use the attached bag image, do not change its shape, color, or texture), placed on a polished mid-century modern wooden table with soft, diffused sunlight casting warm shadows, creating a cinematic atmosphere, rich contrast, ultra-detailed, 8K resolution, professional product photography, background photorealistic inspired by high-end fashion campaigns with a mix of deep shadows and warm tones.\n\n• Exact Shape & Color: Use the attached handbag without modifications\n• Texture: Maintain the exact leather grain and stitching details\n• Lighting: Soft, directional light for a premium feel\n• Background: Minimalist interior with dramatic shadows and polished wooden surfaces.",tips:"حافظ على شكل ولون الحقيبة بدون تعديل عند رفع الصورة.",tags:["handbag","fashion","cinematic","luxury","8k"],created:now()},
+    {id:7,title:"Kids Fashion – Dress Model Scene",category:"Fashion Photography",tool:"Midjourney / DALL-E",purpose:"صورة كتالوج أزياء أطفال",prompt:"Create a high-resolution vertical studio photo (4:5 aspect ratio) of a cheerful young girl (around 6–4 years old) standing in a minimalist, pastel-colored studio setting with soft lighting. She is wearing a stylish [Dress attached as an image] and a wide straw hat, holding it playfully with both hands. Her pose is relaxed and joyful, smiling toward the camera.\n\nThe background includes a couple of tropical green plants and soft yellow/beige blocks for a summery, fresh vibe. She wears white ballerina shoes with transparent bow details. Focus on the full outfit, with realistic textures and fabric flow. The scene should be fashion catalog quality with clean, aesthetic composition.",tips:"ارفع صورة الفستان واستبدل [Dress attached as an image] بوصفه.",tags:["kids","fashion","catalog","dress","studio"],created:now()},
+    {id:8,title:"Bedding – Interior Mockup Scene",category:"Product Photography",tool:"Midjourney / DALL-E",purpose:"موكاب غرفة نوم لعرض أقمشة المفارش",prompt:"CREATE A HIGH-RESOLUTION, 4:5 VERTICAL IMAGE OF A MODERN, MINIMALISTIC BEDROOM WITH A SOFT NEUTRAL COLOR PALETTE. THE ROOM FEATURES A QUEEN-SIZED BED WITH A CURVED UPHOLSTERED HEADBOARD IN BEIGE. THE BED IS NEATLY MADE WITH A CUSTOMIZABLE BEDSHEET AND MATCHING PILLOW COVERS THAT SHOULD DISPLAY A USER-SUPPLIED FABRIC DESIGN (FLORAL, GEOMETRIC, ABSTRACT, ETC.). USE NATURAL DAYLIGHT COMING FROM A LARGE WINDOW ON THE RIGHT SIDE TO ENHANCE THE FABRIC TEXTURE AND COLOR. THE BACKGROUND INCLUDES TWO PASTEL-COLORED SIDE TABLES—ONE WITH A GLASS LAMP AND THE OTHER WITH A MODERN VASE HOLDING A MINIMAL PLANT.\n\nABOVE THE BED, HANG TWO FRAMED, ABSTRACT ARCHITECTURAL PRINTS. THE FLOOR IS A WOODEN HERRINGBONE PATTERN.",tips:"وفّر تصميم القماش الذي تريد عرضه في المفارش.",tags:["bedding","interior","mockup","bedroom","fabric"],created:now()},
+    // ── Camera Angles ──
+    {id:101,title:"Eye Level – زاوية مستوى العين",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا في مستوى عين الشخصية، منظور طبيعي",prompt:"camera positioned at the exact eye level of the subject, straight horizontal alignment, no tilt, natural perspective, subject facing camera directly, balanced composition, realistic human viewpoint",tips:"أضف هذه الجملة في نهاية أي برومبت للحصول على زاوية التصوير المطلوبة.",tags:["camera","angle","eye-level","composition"],created:now()},
+    {id:102,title:"High Angle – زاوية عالية",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا فوق الشخصية تنظر للأسفل",prompt:"camera positioned above the subject looking downward at a noticeable angle, subject appears smaller and slightly dominated, perspective clearly from top to bottom, natural vertical compression",tips:"تُستخدم لإظهار الشخصية أصغر أو أكثر ضعفاً.",tags:["camera","angle","high-angle","composition"],created:now()},
+    {id:103,title:"Low Angle – زاوية منخفضة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا أسفل الشخصية تنظر للأعلى",prompt:"camera positioned below the subject looking upward, subject appears dominant and powerful, strong upward perspective, slight distortion emphasizing height and presence",tips:"تُستخدم لجعل الشخصية تبدو قوية ومهيبة.",tags:["camera","angle","low-angle","composition"],created:now()},
+    {id:104,title:"Bird's Eye View – منظور طائر الطير",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا مباشرة من الأعلى بزاوية 90 درجة",prompt:"camera placed directly overhead at a 90-degree angle, perfectly top-down view, flat perspective, subject seen from above with no visible horizon, geometric composition",tips:"رائع للتصميمات الهندسية والمشاهد من الأعلى.",tags:["camera","angle","birds-eye","overhead"],created:now()},
+    {id:105,title:"Worm's Eye View – منظور دودة الأرض",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا على مستوى الأرض تنظر للأعلى بشكل مبالغ",prompt:"camera placed extremely low on the ground looking straight up, dramatic upward perspective, strong distortion, subject towering above frame, sky or ceiling dominating background",tips:"تأثير درامي جداً، مناسب للمباني والشخصيات العملاقة.",tags:["camera","angle","worms-eye","dramatic"],created:now()},
+    {id:106,title:"Dutch Angle – زاوية هولندية مائلة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا مائلة لإضفاء شعور دينامي أو توتر",prompt:"camera intentionally tilted sideways, diagonal horizon line, unbalanced composition, dynamic and slightly disorienting perspective, clear rotation of the frame",tips:"تُستخدم في أفلام الرعب والإثارة.",tags:["camera","angle","dutch","tilted"],created:now()},
+    {id:107,title:"Over-the-Shoulder (OTS) – فوق الكتف",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا خلف كتف شخصية تركز على الشخصية الأمامية",prompt:"camera positioned behind one subject's shoulder, partial shoulder and back of head visible in foreground, focus on second subject in front, natural conversational framing",tips:"كلاسيكي في مشاهد الحوار.",tags:["camera","angle","OTS","conversation"],created:now()},
+    {id:108,title:"Point of View (POV) – منظور شخصي",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا تمثل عيون الشخصية (منظور أول شخص)",prompt:"camera represents the exact viewpoint of the subject, as if seen through their eyes, hands or body may appear in frame, immersive first-person perspective",tips:"تجربة غامرة للمشاهد.",tags:["camera","angle","POV","first-person"],created:now()},
+    {id:109,title:"Close-Up – لقطة مقربة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"تأطير ضيق على الوجه أو التفصيلة الرئيسية",prompt:"tight framing focusing on subject's face or main detail, minimal background visible, high emphasis on facial features or object details, frame filled with subject",tips:"قوية للتعبير العاطفي وتفاصيل المنتج.",tags:["camera","angle","close-up","face"],created:now()},
+    {id:110,title:"Extreme Close-Up – لقطة مقربة جداً",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"تكبير شديد لتفصيلة صغيرة جداً",prompt:"extremely tight framing showing only a small detail (eye, lips, texture), highly magnified subject, background completely removed or blurred",tips:"مثالية لإبراز الملمس والتفاصيل الدقيقة.",tags:["camera","angle","extreme-close-up","macro"],created:now()},
+    {id:111,title:"Medium Shot – لقطة متوسطة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"تأطير من الخصر للأعلى",prompt:"camera framing subject from waist up, balanced view between subject and background, natural perspective, commonly used conversational composition",tips:"الأكثر استخداماً في الحوارات والمقابلات.",tags:["camera","angle","medium","waist-up"],created:now()},
+    {id:112,title:"Wide Shot – لقطة واسعة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"الشخصية كاملة مع السياق المحيط بها",prompt:"subject fully visible within environment, significant background presence, clear spatial context, subject occupies moderate portion of frame",tips:"تُظهر العلاقة بين الشخصية وبيئتها.",tags:["camera","angle","wide","environment"],created:now()},
+    {id:113,title:"Long Shot – لقطة بعيدة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"الشخصية صغيرة في محيط كبير",prompt:"camera positioned far from subject, subject appears smaller within large environment, strong emphasis on surroundings and scale",tips:"تُبرز ضخامة المكان أو وحدة الشخصية.",tags:["camera","angle","long-shot","scale"],created:now()},
+    {id:114,title:"Extreme Long Shot – لقطة بعيدة جداً",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"الشخصية بالكاد مرئية في المشهد",prompt:"camera very far from subject, subject barely visible, environment dominates frame, cinematic large-scale composition",tips:"سينمائية جداً، مناسبة للافتتاحيات.",tags:["camera","angle","extreme-long","cinematic"],created:now()},
+    {id:115,title:"Top Shot – لقطة من الأعلى (مائلة)",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا من الأعلى بزاوية ليست 90 درجة كاملة",prompt:"camera placed above subject at a high angle but not perfectly 90 degrees, slightly angled downward perspective, depth still visible",tips:"بديل أكثر دراما من Bird's Eye.",tags:["camera","angle","top-shot","overhead"],created:now()},
+    {id:116,title:"Ground Level Shot – لقطة على مستوى الأرض",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا على مستوى السطح الأرضي",prompt:"camera placed at ground level parallel to surface, very low angle but not fully upward, foreground ground texture visible, realistic low perspective",tips:"تُبرز ملمس الأرض وتُضيف عمقاً للمشهد.",tags:["camera","angle","ground-level","low"],created:now()},
+    {id:117,title:"Side Angle – زاوية جانبية (بروفايل)",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا من الجانب مباشرة",prompt:"camera positioned directly to the side of the subject (profile view), subject facing left or right, clear side silhouette, no frontal visibility",tips:"كلاسيكية للبورتريه الجانبي.",tags:["camera","angle","side","profile"],created:now()},
+    {id:118,title:"Front Angle – زاوية أمامية مباشرة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا مباشرة أمام الشخصية",prompt:"camera positioned directly in front of the subject, full frontal view, symmetrical composition, subject facing camera",tips:"تكوين متماثل ومتوازن.",tags:["camera","angle","front","symmetrical"],created:now()},
+    {id:119,title:"Back Angle – زاوية خلفية",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا خلف الشخصية تماماً",prompt:"camera positioned behind the subject, subject facing away from camera, back fully visible, no facial features shown",tips:"تُضيف غموضاً وتشويقاً للمشهد.",tags:["camera","angle","back","mystery"],created:now()},
+  ];
+  // Merge: add any seed prompt whose id doesn't already exist
+  const existingIds=new Set(prompts.map(p=>p.id));
+  SEED.forEach(s=>{ if(!existingIds.has(s.id)) prompts.push(s); });
+  save();
+})();
+if(!resources.length){
+  resources=[
+    {id:101,type:"pdf",title:"دليل Midjourney الكامل",desc:"شرح تفصيلي لكل البارامترات والأوامر",category:"Midjourney",link:"",tags:["guide","midjourney"],created:now()},
+    {id:102,type:"video",title:"كورس ChatGPT للمبتدئين",desc:"شرح فيديو خطوة بخطوة",category:"ChatGPT",link:"https://youtube.com",tags:["tutorial","chatgpt"],created:now()},
+    {id:103,type:"note",title:"تيبس مهمة للبرومبتات",desc:"ملاحظاتي الشخصية",category:"عام",note:"- دايماً حدد الستايل\n- استخدم كلمة 'photorealistic' للصور الواقعية\n- الـ aspect ratio مهم جداً\n- جرب --chaos لنتايج متنوعة",tags:["tips"],created:now()},
+    {id:104,type:"image",title:"مرجع الألوان للتصميم",desc:"إنفوجرافيك بكل كودات الألوان",category:"تصميم",link:"",tags:["colors","design"],created:now()},
+  ];
+  save();
+}
+
+// ─── TOOL COLORS ──────────────────────────────────────────────────────────
+const TOOL_C={
+  'Midjourney':{bg:'rgba(108,99,255,.12)',color:'#6c63ff',border:'rgba(108,99,255,.3)'},
+  'DALL-E':{bg:'rgba(255,101,132,.12)',color:'#ff6584',border:'rgba(255,101,132,.3)'},
+  'Firefly':{bg:'rgba(249,202,36,.12)',color:'#f9ca24',border:'rgba(249,202,36,.3)'},
+  'Stable':{bg:'rgba(67,233,123,.12)',color:'#43e97b',border:'rgba(67,233,123,.3)'},
+};
+function toolStyle(t){
+  for(const k in TOOL_C) if(t&&t.includes(k)) return TOOL_C[k];
+  return {bg:'rgba(100,120,200,.12)',color:'#9fa8da',border:'rgba(100,120,200,.3)'};
+}
+
+const TYPE_META={
+  pdf:{icon:'📄',cls:'pdf',btnCls:'pdf-btn',btnLabel:'📄 فتح / تحميل'},
+  image:{icon:'🖼️',cls:'image',btnCls:'img-btn',btnLabel:'🖼️ عرض الصورة'},
+  video:{icon:'🎬',cls:'video',btnCls:'vid-btn',btnLabel:'▶️ مشاهدة الفيديو'},
+  note:{icon:'📝',cls:'note',btnCls:'note-btn',btnLabel:'📖 قراءة الملاحظة'},
+};
+
+// ─── CATEGORY EMOJI ──────────────────────────────────────────────────────
+function getCategoryEmoji(cat){
+  if(!cat) return '✨';
+  const c=cat.toLowerCase();
+  if(c.includes('product')||c.includes('منتج')) return '🛍️';
+  if(c.includes('fashion')||c.includes('أزياء')) return '👗';
+  if(c.includes('camera')||c.includes('angle')||c.includes('زاوية')) return '🎬';
+  if(c.includes('logo')) return '🎨';
+  if(c.includes('social')||c.includes('سوشيال')) return '📱';
+  if(c.includes('portrait')||c.includes('بورتريه')) return '🖼️';
+  if(c.includes('poster')||c.includes('بوستر')) return '🎭';
+  if(c.includes('3d')) return '🧊';
+  return '✨';
+}
+
+// ─── RENDER PROMPTS ───────────────────────────────────────────────────────
+function renderPrompts(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const filtered=prompts.filter(p=>{
+    const mc=pFilter==='all'||p.category===pFilter;
+    const mq=!q||[p.title,p.category,p.tool,p.purpose,p.prompt,...(p.tags||[])].join(' ').toLowerCase().includes(q);
+    return mc&&mq;
+  });
+  const grid=document.getElementById('promptsGrid');
+  grid.className='cards-grid'+(pView==='list'?' list-view':'');
+  grid.innerHTML=filtered.map((p,i)=>{
+    const ts=toolStyle(p.tool);
+    const imgHtml=p.image
+      ?`<img src="${p.image}" alt="${esc(p.title)}" loading="lazy">`
+      :`<div class="card-img-placeholder">${getCategoryEmoji(p.category)}</div>`;
+    return `<div class="prompt-card" style="animation-delay:${(i%6)*.05}s" onclick="openPromptModal(${p.id})">
+      <div class="card-img-wrap">
+        ${imgHtml}
+        <div class="card-img-overlay"></div>
+        ${p.tool?`<span class="card-tool-badge" style="background:${ts.bg};color:${ts.color};border-color:${ts.border}">${esc(p.tool)}</span>`:''}
+      </div>
+      <div class="card-header">
+        <span class="card-num">#${String(p.id).padStart(2,'0')}</span>
+        <div class="card-title">${esc(p.title)}</div>
+      </div>
+      <div class="card-body">
+        ${p.purpose?`<div class="card-purpose">${esc(p.purpose)}</div>`:''}
+        <div class="card-prompt-preview">${esc(p.prompt)}</div>
+        ${p.tags&&p.tags.length?`<div class="card-tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>`:''}
+      </div>
+      <div class="card-footer">
+        <button class="copy-btn" id="copy-${p.id}" onclick="copyP(event,${p.id})">📋 نسخ البرومبت</button>
+        <button class="expand-btn" onclick="openPromptModal(${p.id});event.stopPropagation()">⤢</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('p-empty').classList.toggle('show',prompts.length===0);
+  document.getElementById('p-nores').classList.toggle('show',prompts.length>0&&filtered.length===0);
+  document.getElementById('p-total').textContent=prompts.length;
+  document.getElementById('p-cats').textContent=[...new Set(prompts.map(p=>p.category).filter(Boolean))].length;
+  document.getElementById('p-tools').textContent=[...new Set(prompts.map(p=>p.tool).filter(Boolean))].length;
+  document.getElementById('tab-count-prompts').textContent=prompts.length;
+
+  // dynamic category filters
+  const bar=document.getElementById('p-filters');
+  bar.querySelectorAll('.dyn-f').forEach(e=>e.remove());
+  const vt=bar.querySelector('.view-toggle');
+  [...new Set(prompts.map(p=>p.category).filter(Boolean))].forEach(cat=>{
+    const b=document.createElement('button');
+    b.className='filter-btn dyn-f'+(pFilter===cat?' active':'');
+    b.textContent=cat; b.onclick=()=>setPFilter(cat,b);
+    bar.insertBefore(b,vt);
+  });
+}
+
+// ─── RENDER RESOURCES ─────────────────────────────────────────────────────
+function renderResources(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const filtered=resources.filter(r=>{
+    const mt=lFilter==='all'||r.type===lFilter;
+    const mq=!q||[r.title,r.desc,r.category,r.type,...(r.tags||[])].join(' ').toLowerCase().includes(q);
+    return mt&&mq;
+  });
+  const grid=document.getElementById('libraryGrid');
+  grid.className='cards-grid'+(lView==='list'?' list-view':'');
+  grid.innerHTML=filtered.map((r,i)=>{
+    const m=TYPE_META[r.type]||TYPE_META.note;
+    const linkable=r.type!=='note'&&r.link;
+    return `<div class="resource-card" data-type="${r.type}" style="animation-delay:${(i%6)*.05}s" onclick="openResModal(${r.id})">
+      <div class="res-top">
+        <div class="res-type-icon ${m.cls}">${m.icon}</div>
+        <div class="res-info">
+          <div class="res-title">${esc(r.title)}</div>
+          <div class="res-meta">
+            ${r.category?`<span>📁 ${esc(r.category)}</span>`:''}
+            <span>${r.created||''}</span>
+          </div>
+        </div>
+      </div>
+      ${r.desc?`<div class="res-desc">${esc(r.desc)}</div>`:''}
+      <div class="card-footer">
+        ${linkable
+          ?`<a class="res-link-btn ${m.btnCls}" href="${esc(r.link)}" target="_blank" onclick="event.stopPropagation()">${m.btnLabel}</a>`
+          :`<button class="res-link-btn ${m.btnCls}" onclick="openResModal(${r.id});event.stopPropagation()">${r.type==='note'?'📖 قراءة':'👁️ عرض'}</button>`
+        }
+        <button class="expand-btn" onclick="openResModal(${r.id});event.stopPropagation()">⤢</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('l-empty').classList.toggle('show',resources.length===0);
+  document.getElementById('l-nores').classList.toggle('show',resources.length>0&&filtered.length===0);
+  document.getElementById('l-pdf').textContent=resources.filter(r=>r.type==='pdf').length;
+  document.getElementById('l-img').textContent=resources.filter(r=>r.type==='image').length;
+  document.getElementById('l-vid').textContent=resources.filter(r=>r.type==='video').length;
+  document.getElementById('l-note').textContent=resources.filter(r=>r.type==='note').length;
+  document.getElementById('tab-count-library').textContent=resources.length;
+}
+
+function renderAll(){ renderPrompts(); renderResources(); }
+
+// ─── TABS ─────────────────────────────────────────────────────────────────
+function switchTab(tab,el){
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.tab-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+// ─── FILTERS & VIEWS ──────────────────────────────────────────────────────
+function setPFilter(f,el){ pFilter=f; document.querySelectorAll('#p-filters .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderPrompts(); }
+function setLFilter(f,el){ lFilter=f; document.querySelectorAll('#l-filters .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderResources(); }
+function setPView(v,el){ pView=v; document.querySelectorAll('#p-filters .view-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderPrompts(); }
+function setLView(v,el){ lView=v; document.querySelectorAll('#l-filters .view-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderResources(); }
+
+// ─── COPY ─────────────────────────────────────────────────────────────────
+function copyP(e,id){
+  e.stopPropagation();
+  const p=prompts.find(x=>x.id===id); if(!p) return;
+  navigator.clipboard.writeText(p.prompt).then(()=>{
+    const btn=document.getElementById('copy-'+id);
+    if(btn){btn.textContent='✅ تم النسخ!';btn.classList.add('copied');}
+    toast();
+    setTimeout(()=>{if(btn){btn.innerHTML='📋 نسخ البرومبت';btn.classList.remove('copied');}},2000);
+  });
+}
+function toast(msg='✅ تم!'){
+  const t=document.getElementById('toast'); t.textContent=msg;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400);
+}
+
+// ─── MODALS ───────────────────────────────────────────────────────────────
+function openPromptModal(id){
+  const p=prompts.find(x=>x.id===id); if(!p) return;
+  currentModalId=id; currentModalKind='prompt';
+  const ts=toolStyle(p.tool);
+  document.getElementById('modal-title').textContent=p.title;
+  document.getElementById('modal-meta').innerHTML=
+    (p.category?`<span class="tag">${esc(p.category)}</span>`:'')+
+    (p.tool?`<span class="card-tool-badge" style="background:${ts.bg};color:${ts.color};border-color:${ts.border}">${esc(p.tool)}</span>`:'')+
+    (p.created?`<span style="font-size:11px;color:var(--text3)">${esc(p.created)}</span>`:'');
+  document.getElementById('modal-body').innerHTML=
+    (p.purpose?`<div class="modal-section"><div class="modal-section-title">🎯 الغرض</div><div class="modal-text">${esc(p.purpose)}</div></div>`:'')+
+    `<div class="modal-section"><div class="modal-section-title">✍️ البرومبت</div><div class="modal-prompt-box">${esc(p.prompt)}</div></div>`+
+    (p.tips?`<div class="modal-section"><div class="modal-section-title">💡 تيبس</div><div class="modal-text">${esc(p.tips)}</div></div>`:'')+
+    (p.tags&&p.tags.length?`<div class="modal-section"><div class="modal-section-title">🏷️ تاجات</div><div class="card-tags">${p.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div>`:'');
+  document.getElementById('modal-footer').innerHTML=
+    `<button class="modal-copy-btn" id="mcopy" onclick="copyFromModal()">📋 نسخ البرومبت</button>
+     <button class="btn btn-ghost" onclick="editPrompt(${id})" style="flex-shrink:0">✏️</button>
+     <button class="btn btn-ghost" onclick="deletePrompt(${id})" style="flex-shrink:0;color:var(--accent2);border-color:var(--accent2)">🗑️</button>`;
+  openModalEl();
+}
+
+function openResModal(id){
+  const r=resources.find(x=>x.id===id); if(!r) return;
+  currentModalId=id; currentModalKind='resource';
+  const m=TYPE_META[r.type]||TYPE_META.note;
+  document.getElementById('modal-title').textContent=m.icon+' '+r.title;
+  document.getElementById('modal-meta').innerHTML=
+    `<span class="tag">${r.type.toUpperCase()}</span>`+
+    (r.category?`<span class="tag">${esc(r.category)}</span>`:'')+
+    (r.created?`<span style="font-size:11px;color:var(--text3)">${esc(r.created)}</span>`:'');
+  let body='';
+  if(r.desc) body+=`<div class="modal-section"><div class="modal-section-title">📄 الوصف</div><div class="modal-text">${esc(r.desc)}</div></div>`;
+  if(r.type==='note'&&r.note) body+=`<div class="modal-section"><div class="modal-section-title">📝 المحتوى</div><div class="note-content-area">${esc(r.note)}</div></div>`;
+  if(r.link) body+=`<div class="modal-section"><div class="modal-section-title">🔗 الرابط</div><div class="modal-text"><a href="${esc(r.link)}" target="_blank" style="color:var(--accent)">${esc(r.link)}</a></div></div>`;
+  if(r.tags&&r.tags.length) body+=`<div class="modal-section"><div class="modal-section-title">🏷️ تاجات</div><div class="card-tags">${r.tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div>`;
+  document.getElementById('modal-body').innerHTML=body;
+
+  let footer='';
+  if(r.type==='note'&&r.note)
+    footer+=`<button class="modal-copy-btn" onclick="copyNote(${id})">📋 نسخ المحتوى</button>`;
+  else if(r.link)
+    footer+=`<a class="modal-copy-btn" href="${esc(r.link)}" target="_blank" style="text-decoration:none">${m.btnLabel}</a>`;
+  footer+=`<button class="btn btn-ghost" onclick="editRes(${id})" style="flex-shrink:0">✏️</button>
+           <button class="btn btn-ghost" onclick="deleteRes(${id})" style="flex-shrink:0;color:var(--accent2);border-color:var(--accent2)">🗑️</button>`;
+  document.getElementById('modal-footer').innerHTML=footer;
+  openModalEl();
+}
+
+function openModalEl(){
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){ if(e.target===document.getElementById('modalOverlay')) closeModalDirect(); }
+function closeModalDirect(){ document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow=''; currentModalId=null; }
+
+function copyFromModal(){
+  const p=prompts.find(x=>x.id===currentModalId); if(!p) return;
+  navigator.clipboard.writeText(p.prompt).then(()=>{
+    const btn=document.getElementById('mcopy');
+    if(btn){btn.textContent='✅ تم النسخ!';btn.classList.add('copied');}
+    toast();
+    setTimeout(()=>{if(btn){btn.textContent='📋 نسخ البرومبت';btn.classList.remove('copied');}},2000);
+  });
+}
+function copyNote(id){
+  const r=resources.find(x=>x.id===id); if(!r) return;
+  navigator.clipboard.writeText(r.note||'').then(()=>toast('✅ تم نسخ الملاحظة!'));
+}
+
+// ─── CRUD PROMPTS ─────────────────────────────────────────────────────────
+function editPrompt(id){ closeModalDirect(); openPanel('prompt',id); }
+function deletePrompt(id){
+  if(!confirm('هتمسح البرومبت ده؟')) return;
+  prompts=prompts.filter(x=>x.id!==id); save(); closeModalDirect(); renderAll();
+}
+function savePrompt(){
+  const title=document.getElementById('f-title').value.trim();
+  const prompt=document.getElementById('f-prompt').value.trim();
+  if(!title||!prompt){alert('الاسم والبرومبت مطلوبين!');return;}
+  const editId=+document.getElementById('editId').textContent;
+  const imgEl=document.getElementById('f-image-preview');
+  const imgData=(imgEl&&imgEl.style.display!=='none'&&imgEl.src&&imgEl.src.startsWith('data:'))?imgEl.src:'';
+  const d={title,category:document.getElementById('f-category').value.trim(),tool:document.getElementById('f-tool').value.trim(),purpose:document.getElementById('f-purpose').value.trim(),prompt,tips:document.getElementById('f-tips').value.trim(),tags:document.getElementById('f-tags').value.split(',').map(t=>t.trim()).filter(Boolean),image:imgData,created:now()};
+  if(editId){ const i=prompts.findIndex(x=>x.id===editId); if(i>-1) prompts[i]={...prompts[i],...d}; }
+  else{ d.id=(prompts.reduce((m,p)=>Math.max(m,typeof p.id==='number'&&p.id<1000000?p.id:0),0))+1; prompts.push(d); }
+  save(); closePanel(); renderAll(); toast('✅ تم الحفظ!');
+}
+
+// ─── CRUD RESOURCES ───────────────────────────────────────────────────────
+function editRes(id){ closeModalDirect(); openPanel('resource',id); }
+function deleteRes(id){
+  if(!confirm('هتمسح العنصر ده؟')) return;
+  resources=resources.filter(x=>x.id!==id); save(); closeModalDirect(); renderAll();
+}
+function saveResource(){
+  const title=document.getElementById('r-title').value.trim();
+  if(!title){alert('العنوان مطلوب!');return;}
+  const editId=+document.getElementById('editId').textContent;
+  const d={type:selectedType,title,desc:document.getElementById('r-desc').value.trim(),category:document.getElementById('r-category').value.trim(),link:document.getElementById('r-link').value.trim(),note:document.getElementById('r-note').value.trim(),tags:document.getElementById('r-tags').value.split(',').map(t=>t.trim()).filter(Boolean),created:now()};
+  if(editId){ const i=resources.findIndex(x=>x.id===editId); if(i>-1) resources[i]={...resources[i],...d}; }
+  else{ d.id=Date.now(); resources.push(d); }
+  save(); closePanel(); renderAll(); toast('✅ تم الحفظ!');
+}
+
+// ─── PANEL ────────────────────────────────────────────────────────────────
+function previewImg(input){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById('f-image-preview');
+    const ph=document.getElementById('f-img-placeholder');
+    img.src=e.target.result; img.style.display='block';
+    if(ph) ph.style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function openPanel(mode, editId=null){
+  mode=mode||(currentTab==='library'?'resource':'prompt');
+  switchPanelTab(mode);
+  document.getElementById('editId').textContent='';
+
+  if(mode==='prompt'){
+    ['title','category','tool','purpose','prompt','tips','tags'].forEach(f=>document.getElementById('f-'+f).value=''); const _pi=document.getElementById('f-image-preview'); if(_pi){_pi.src='';_pi.style.display='none';} const _pp=document.getElementById('f-img-placeholder'); if(_pp) _pp.style.display='';
+    if(editId){ const p=prompts.find(x=>x.id===editId); if(p){document.getElementById('f-title').value=p.title||'';document.getElementById('f-category').value=p.category||'';document.getElementById('f-tool').value=p.tool||'';document.getElementById('f-purpose').value=p.purpose||'';document.getElementById('f-prompt').value=p.prompt||'';document.getElementById('f-tips').value=p.tips||'';document.getElementById('f-tags').value=(p.tags||[]).join(', ');document.getElementById('editId').textContent=editId; if(p.image){const _pi=document.getElementById('f-image-preview');if(_pi){_pi.src=p.image;_pi.style.display='block';const _pp=document.getElementById('f-img-placeholder');if(_pp)_pp.style.display='none';}} } }
+  } else {
+    ['title','desc','category','link','note','tags'].forEach(f=>document.getElementById('r-'+f).value='');
+    if(editId){ const r=resources.find(x=>x.id===editId); if(r){selectType(r.type); document.getElementById('r-title').value=r.title||'';document.getElementById('r-desc').value=r.desc||'';document.getElementById('r-category').value=r.category||'';document.getElementById('r-link').value=r.link||'';document.getElementById('r-note').value=r.note||'';document.getElementById('r-tags').value=(r.tags||[]).join(', ');document.getElementById('editId').textContent=editId;} }
+  }
+  document.getElementById('panelTitle').textContent=editId?'✏️ تعديل':'➕ إضافة جديد';
+  document.getElementById('addPanel').classList.add('open');
+}
+function closePanel(){ document.getElementById('addPanel').classList.remove('open'); }
+
+function switchPanelTab(mode){
+  panelTabMode=mode;
+  document.getElementById('ptab-prompt').classList.toggle('active',mode==='prompt');
+  document.getElementById('ptab-resource').classList.toggle('active',mode==='resource');
+  document.getElementById('form-prompt').style.display=mode==='prompt'?'':'none';
+  document.getElementById('form-resource').style.display=mode==='resource'?'':'none';
+}
+
+function selectType(type, el){
+  selectedType=type;
+  document.querySelectorAll('.type-opt').forEach(b=>b.classList.remove('selected'));
+  if(el) el.classList.add('selected');
+  else { const found=document.querySelector(`.type-opt[data-type="${type}"]`); if(found) found.classList.add('selected'); }
+  document.getElementById('note-field').style.display=type==='note'?'':'none';
+  document.getElementById('link-field').style.display=type==='note'?'none':'';
+}
+
+// ─── THEME ────────────────────────────────────────────────────────────────
+let isDark=localStorage.getItem('ai_theme')!=='light';
+function applyTheme(){ document.body.classList.toggle('light',!isDark); document.querySelector('.theme-toggle').textContent=isDark?'🌙':'☀️'; }
+function toggleTheme(){ isDark=!isDark; localStorage.setItem('ai_theme',isDark?'dark':'light'); applyTheme(); }
+applyTheme();
+
+// ─── INIT ─────────────────────────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
