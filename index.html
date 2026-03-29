@@ -108,12 +108,7 @@ main{position:relative;z-index:1;padding:28px;max-width:1400px;margin:0 auto;}
 /* ── PROMPT CARD ── */
 .prompt-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .3s;cursor:pointer;position:relative;animation:fadeUp .4s ease both;display:flex;flex-direction:column;}
 .prompt-card:hover{border-color:var(--border-light);transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,.35);}
-.card-img-wrap{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--bg2);flex-shrink:0;}
-.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
-.prompt-card:hover .card-img-wrap img{transform:scale(1.06);}
-.card-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,var(--bg3),var(--bg2));}
-.card-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.5));pointer-events:none;}
-.card-tool-badge{position:absolute;top:10px;right:10px;font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid;font-weight:700;backdrop-filter:blur(8px);}
+.card-tool-badge{display:inline-flex;align-items:center;font-size:10px;padding:3px 10px;border-radius:20px;border:1px solid;font-weight:700;}
 .card-header{padding:14px 16px 6px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
 .card-num{font-size:10px;font-weight:700;color:var(--text3);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:2px 7px;flex-shrink:0;}
 .card-title{font-size:15px;font-weight:900;color:var(--text);flex:1;line-height:1.4;}
@@ -336,13 +331,6 @@ main{position:relative;z-index:1;padding:28px;max-width:1400px;margin:0 auto;}
 
     <!-- PROMPT FORM -->
     <div id="form-prompt">
-      <div class="form-group"><label class="form-label">صورة البرومبت</label>
-        <div class="img-upload-wrap" onclick="document.getElementById('f-image-input').click()">
-          <input type="file" id="f-image-input" accept="image/*" style="display:none" onchange="previewImg(this)">
-          <div id="f-img-placeholder">🖼️<br><span style="font-size:11px;color:var(--text3)">اضغط لرفع صورة</span></div>
-          <img id="f-image-preview" class="img-preview" alt="preview">
-        </div>
-      </div>
       <div class="form-group"><label class="form-label">اسم البرومبت *</label><input type="text" class="form-input" id="f-title" placeholder="مثال: Minimalist Logo"></div>
       <div class="form-group"><label class="form-label">الفئة *</label><input type="text" class="form-input" id="f-category" placeholder="Logos, Social Media, UI..."></div>
       <div class="form-group"><label class="form-label">الأداة</label><input type="text" class="form-input" id="f-tool" placeholder="Midjourney, DALL-E, Firefly..."></div>
@@ -441,21 +429,31 @@ function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
     {id:117,title:"Side Angle – زاوية جانبية (بروفايل)",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا من الجانب مباشرة",prompt:"camera positioned directly to the side of the subject (profile view), subject facing left or right, clear side silhouette, no frontal visibility",tips:"كلاسيكية للبورتريه الجانبي.",tags:["camera","angle","side","profile"],created:now()},
     {id:118,title:"Front Angle – زاوية أمامية مباشرة",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا مباشرة أمام الشخصية",prompt:"camera positioned directly in front of the subject, full frontal view, symmetrical composition, subject facing camera",tips:"تكوين متماثل ومتوازن.",tags:["camera","angle","front","symmetrical"],created:now()},
     {id:119,title:"Back Angle – زاوية خلفية",category:"Camera Angles",tool:"Midjourney / DALL-E / Flux",purpose:"كاميرا خلف الشخصية تماماً",prompt:"camera positioned behind the subject, subject facing away from camera, back fully visible, no facial features shown",tips:"تُضيف غموضاً وتشويقاً للمشهد.",tags:["camera","angle","back","mystery"],created:now()},
+    // ── New Prompts from Library ──
+    {id:1774724964927,title:"Honey Jar – Cinematic Truck Ad",category:"Product Photography",tool:"Midjourney / DALL-E",purpose:"إعلان سينمائي لمنتج في شاحنة بيك أب",prompt:"Create a high-resolution, cinematic-style advertisement image set during golden hour. The scene features a vintage red pickup truck driving on a dirt path through green fields, heading toward a backdrop of iconic jungle under a sky filled with flying birds. On the truck's bed, place a massive, oversized product jar—replace this with my uploaded image, while keeping the same proportion and perspective. The jar should have a burlap cloth cover tied with twine for a rustic feel. Ensure the product label is clearly visible, maintaining lighting and reflections consistent with the outdoor setting. Use soft shadows and morning sunlight to create a visually striking, whimsical advertisement that blends product exaggeration with a real-world backdrop.",tips:"ارفع صورة المنتج وضعها مكان الـ jar لتحصل على نتيجة دقيقة.",tags:["truck","cinematic","golden-hour","product","jar"],created:now()},
+    {id:1774725016339,title:"Food Product – Moody Editorial Setup",category:"Product Photography",tool:"Midjourney / DALL-E",purpose:"تصوير تحريري فاخر لمنتج غذائي",prompt:"Create a high-resolution 4:5 vertical food product photo styled in a moody, editorial setup. Place a [Image Uploaded] on a minimalist, round stone pedestal stand. Use a matte, complementary background and neutral grey table linen to create a clean, modern aesthetic. Surround the scene with a few ceramic cups and minimalistic tableware in muted tones, maintaining a calm and organic vibe.\n\nThe lighting should be soft and diffused from the left, with subtle shadows that highlight texture and depth. Ensure the focus is sharp on the product, with a shallow depth of field that blurs the background slightly.\n\nThe overall tone should be elegant, natural, and editorial – ideal for premium product presentation on social media or print.",tips:"استبدل [Image Uploaded] بصورة منتجك الفعلية للحصول على أفضل نتيجة.",tags:["food","editorial","moody","product","instagram"],created:now()},
+    {id:1774732930709,title:"Storyboard – 9 لقطات نفس المكان",category:"Fashion Photography",tool:"Midjourney / DALL-E",purpose:"ستوري بورد سينمائي 9 زوايا مختلفة لنفس الشخصية",prompt:"أنشئ ستوري بورد سينمائي بأسلوب كولاج اعتمادًا على الصورة المرفقة، بحيث تُستخدم كمرجع أساسي للشخصية والمشهد.\n\nحافظ بدقة تامة على نفس الشخص، نفس ملامح الوجه، ونفس الشعر، مع الحفاظ الكامل على الهوية البصرية دون أي تغيير.\n\nيجب أن تستمد البيئة بالكامل من محتوى الصورة المرفقة، بحيث تتحول إلى جلسة تصوير متكاملة (Editorial Photoshoot) مستوحاة من نفس المكان، العناصر، والخلفية — دون فرض بيئة جديدة غير موجودة.\n\nيتكوّن الستوري بورد من 9 لقطات ضمن نفس الجلسة، مع تنويع احترافي في الزوايا والتكوين:\n\nلقطة بورتريه قريبة تبرز الوجه والتفاصيل\nلقطة متوسطة تُظهر الحركة الطبيعية واللباس\nلقطة كاملة للجسم داخل البيئة\nلقطة تفصيلية للخامات أو العناصر القريبة\nلقطة تفاعل مع عنصر موجود في المشهد (حسب الصورة المرجعية)\nلقطة بعمق ميدان ضحل مع خلفية ضبابية (Bokeh)\nلقطة من زاوية جانبية سينمائية\nلقطة علوية أو إبداعية في التكوين\nلقطة ختامية هادئة تعكس الجو العام\n\nيجب أن تبدو جميع اللقطات وكأنها من نفس جلسة التصوير:\nنفس الإضاءة، نفس تدرّج الألوان، نفس المزاج البصري، نفس المعالجة اللونية\n\nقم بترتيب الصور ضمن كولاج تحريري (Editorial Collage) متماسك بدون أي هوامش أو إطارات أو نصوص.\n\nالإضاءة: ناعمة، طبيعية أو سينمائية حسب الصورة الأصلية، مع توحيد كامل للجو\nالعدسة: عمق ميدان احترافي مع عزل خلفية ناعم\n\nالأسلوب العام: تصوير تحريري فاخر (High-End Editorial Photography) بدقة عالية جدًا، مع إحساس واقعي، متناسق، وسلس — وكأنه جلسة تصوير حقيقية تم تنفيذها في نفس المكان.",tips:"ارفع صورة الشخصية كمرجع، والموقع سيُستنتج تلقائياً منها.",tags:["storyboard","editorial","collage","9-shots","fashion","cinematic"],created:now()},
+    {id:1774732930710,title:"تحسين جودة الصورة + إضاءة ذهبية قوية",category:"Image Enhancement",tool:"Midjourney / DALL-E / Flux",purpose:"تحسين جودة صورة مع إضاءة خلفية ذهبية سينمائية",prompt:"Transform the source image by applying a dramatic, warm cinematic aesthetic typical of high-end music videos. Crucially, the lighting must feature a strong, warm backlight (rim light) originating from behind the subject, creating a glowing golden halo on their hair and shoulders that separates them from the background, while also ensuring ample, soft frontal light on the subject's face so that facial features are clearly and evenly illuminated. The overall atmosphere should be emotional and moody with a shallow depth of field (blurred background), dominated by rich amber, gold, and deep shadow tones, precisely maintaining the original subject's facial features, pose, outfits, background, and gender 100% accurate. Perform a realistic upscale, bringing the subject into extremely sharp focus with enhanced skin texture and detail, styled as bright daytime photography with natural outdoor ambient light retained in the scene and sufficient key light on the face for a well-exposed portrait.",tips:"يحافظ على ملامح الشخص 100% مع تحسين الجودة وإضافة الإضاءة الذهبية.",tags:["enhancement","golden-light","cinematic","upscale","portrait"],created:now()},
   ];
   // Merge: add any seed prompt whose id doesn't already exist
   const existingIds=new Set(prompts.map(p=>p.id));
   SEED.forEach(s=>{ if(!existingIds.has(s.id)) prompts.push(s); });
   save();
 })();
-if(!resources.length){
-  resources=[
+(function mergeResources(){
+  const SEED_RES=[
     {id:101,type:"pdf",title:"دليل Midjourney الكامل",desc:"شرح تفصيلي لكل البارامترات والأوامر",category:"Midjourney",link:"",tags:["guide","midjourney"],created:now()},
     {id:102,type:"video",title:"كورس ChatGPT للمبتدئين",desc:"شرح فيديو خطوة بخطوة",category:"ChatGPT",link:"https://youtube.com",tags:["tutorial","chatgpt"],created:now()},
-    {id:103,type:"note",title:"تيبس مهمة للبرومبتات",desc:"ملاحظاتي الشخصية",category:"عام",note:"- دايماً حدد الستايل\n- استخدم كلمة 'photorealistic' للصور الواقعية\n- الـ aspect ratio مهم جداً\n- جرب --chaos لنتايج متنوعة",tags:["tips"],created:now()},
+    {id:103,type:"note",title:"تيبس مهمة للبرومبتات",desc:"ملاحظاتي الشخصية",category:"عام",note:"- دايماً حدد الستايل\n- استخدم كلمة 'photorealistic' للصور الواقعية\n- الـ aspect ratio مهم جداً\n- جرب --chaos لنتايج متنوعة\n- أضف نسبة العرض للطول المناسبة: 4:5 للإنستاجرام، 16:9 للفيديو\n- استخدم --quality 2 في Midjourney لجودة أعلى",tags:["tips"],created:now()},
     {id:104,type:"image",title:"مرجع الألوان للتصميم",desc:"إنفوجرافيك بكل كودات الألوان",category:"تصميم",link:"",tags:["colors","design"],created:now()},
+    {id:105,type:"note",title:"كلمات الإضاءة الأكثر تأثيراً",desc:"مصطلحات الإضاءة في برومبتات AI",category:"تصميم",note:"🌟 أنواع الإضاءة:\n- Golden hour lighting: إضاءة ذهبية\n- Soft diffused light: إضاءة ناعمة منتشرة\n- Rim light / Backlight: إضاءة خلفية\n- Studio lighting: إضاءة استوديو\n- Cinematic lighting: إضاءة سينمائية\n- Bokeh background: خلفية ضبابية\n- Shallow depth of field: عمق ميدان ضحل\n- Dramatic shadows: ظلال درامية\n\n🎬 كلمات الجودة:\n- Ultra-realistic\n- Hyper-detailed\n- 8K resolution\n- Professional photography\n- Commercial photography style",tags:["lighting","tips","photography"],created:now()},
+    {id:106,type:"note",title:"مصطلحات الكاميرا والعدسات",desc:"أهم مصطلحات الكاميرا في برومبتات AI",category:"Camera",note:"📷 أنواع العدسات:\n- 50mm lens: طبيعي\n- 85mm lens: بورتريه\n- 24mm lens: واسع\n- 135mm telephoto: تيلي فوتو\n- Macro lens: ماكرو للتفاصيل\n\n🎯 زوايا التصوير الرئيسية:\n- Eye level: مستوى العين\n- Low angle: زاوية منخفضة (قوة)\n- High angle: زاوية عالية (ضعف)\n- Bird's eye view: من الأعلى\n- POV: منظور أول شخص\n- OTS (Over the Shoulder): فوق الكتف\n\n📐 نسب الأبعاد:\n- 1:1 مربع (Instagram)\n- 4:5 عمودي (Instagram)\n- 9:16 ريلز/ستوري\n- 16:9 يوتيوب",tags:["camera","lens","angles"],created:now()},
+    {id:107,type:"note",title:"أدوات AI الأساسية وروابطها",desc:"روابط أهم أدوات الذكاء الاصطناعي",category:"أدوات AI",note:"🤖 أدوات الصور:\n• Midjourney: midjourney.com\n• DALL-E: openai.com/dall-e\n• Adobe Firefly: firefly.adobe.com\n• Stable Diffusion: stability.ai\n• Leonardo AI: leonardo.ai\n• Ideogram: ideogram.ai\n\n💬 أدوات النصوص:\n• ChatGPT: chat.openai.com\n• Claude: claude.ai\n• Gemini: gemini.google.com\n\n🎬 أدوات الفيديو:\n• Runway: runwayml.com\n• Kling AI: klingai.com\n• Sora: openai.com/sora\n\n✏️ أدوات التصميم:\n• Canva AI: canva.com\n• Adobe Express: express.adobe.com",tags:["tools","ai","links"],created:now()},
   ];
+  const existingResIds=new Set(resources.map(r=>r.id));
+  SEED_RES.forEach(s=>{ if(!existingResIds.has(s.id)) resources.push(s); });
   save();
-}
+})();
 
 // ─── TOOL COLORS ──────────────────────────────────────────────────────────
 const TOOL_C={
@@ -503,18 +501,11 @@ function renderPrompts(){
   grid.className='cards-grid'+(pView==='list'?' list-view':'');
   grid.innerHTML=filtered.map((p,i)=>{
     const ts=toolStyle(p.tool);
-    const imgHtml=p.image
-      ?`<img src="${p.image}" alt="${esc(p.title)}" loading="lazy">`
-      :`<div class="card-img-placeholder">${getCategoryEmoji(p.category)}</div>`;
     return `<div class="prompt-card" style="animation-delay:${(i%6)*.05}s" onclick="openPromptModal(${p.id})">
-      <div class="card-img-wrap">
-        ${imgHtml}
-        <div class="card-img-overlay"></div>
-        ${p.tool?`<span class="card-tool-badge" style="background:${ts.bg};color:${ts.color};border-color:${ts.border}">${esc(p.tool)}</span>`:''}
-      </div>
       <div class="card-header">
         <span class="card-num">#${String(p.id).padStart(2,'0')}</span>
         <div class="card-title">${esc(p.title)}</div>
+        ${p.tool?`<span class="card-tool-badge" style="background:${ts.bg};color:${ts.color};border-color:${ts.border}">${esc(p.tool)}</span>`:''}
       </div>
       <div class="card-body">
         ${p.purpose?`<div class="card-purpose">${esc(p.purpose)}</div>`:''}
@@ -705,9 +696,7 @@ function savePrompt(){
   const prompt=document.getElementById('f-prompt').value.trim();
   if(!title||!prompt){alert('الاسم والبرومبت مطلوبين!');return;}
   const editId=+document.getElementById('editId').textContent;
-  const imgEl=document.getElementById('f-image-preview');
-  const imgData=(imgEl&&imgEl.style.display!=='none'&&imgEl.src&&imgEl.src.startsWith('data:'))?imgEl.src:'';
-  const d={title,category:document.getElementById('f-category').value.trim(),tool:document.getElementById('f-tool').value.trim(),purpose:document.getElementById('f-purpose').value.trim(),prompt,tips:document.getElementById('f-tips').value.trim(),tags:document.getElementById('f-tags').value.split(',').map(t=>t.trim()).filter(Boolean),image:imgData,created:now()};
+  const d={title,category:document.getElementById('f-category').value.trim(),tool:document.getElementById('f-tool').value.trim(),purpose:document.getElementById('f-purpose').value.trim(),prompt,tips:document.getElementById('f-tips').value.trim(),tags:document.getElementById('f-tags').value.split(',').map(t=>t.trim()).filter(Boolean),created:now()};
   if(editId){ const i=prompts.findIndex(x=>x.id===editId); if(i>-1) prompts[i]={...prompts[i],...d}; }
   else{ d.id=(prompts.reduce((m,p)=>Math.max(m,typeof p.id==='number'&&p.id<1000000?p.id:0),0))+1; prompts.push(d); }
   save(); closePanel(); renderAll(); toast('✅ تم الحفظ!');
@@ -730,26 +719,14 @@ function saveResource(){
 }
 
 // ─── PANEL ────────────────────────────────────────────────────────────────
-function previewImg(input){
-  const file=input.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const img=document.getElementById('f-image-preview');
-    const ph=document.getElementById('f-img-placeholder');
-    img.src=e.target.result; img.style.display='block';
-    if(ph) ph.style.display='none';
-  };
-  reader.readAsDataURL(file);
-}
-
 function openPanel(mode, editId=null){
   mode=mode||(currentTab==='library'?'resource':'prompt');
   switchPanelTab(mode);
   document.getElementById('editId').textContent='';
 
   if(mode==='prompt'){
-    ['title','category','tool','purpose','prompt','tips','tags'].forEach(f=>document.getElementById('f-'+f).value=''); const _pi=document.getElementById('f-image-preview'); if(_pi){_pi.src='';_pi.style.display='none';} const _pp=document.getElementById('f-img-placeholder'); if(_pp) _pp.style.display='';
-    if(editId){ const p=prompts.find(x=>x.id===editId); if(p){document.getElementById('f-title').value=p.title||'';document.getElementById('f-category').value=p.category||'';document.getElementById('f-tool').value=p.tool||'';document.getElementById('f-purpose').value=p.purpose||'';document.getElementById('f-prompt').value=p.prompt||'';document.getElementById('f-tips').value=p.tips||'';document.getElementById('f-tags').value=(p.tags||[]).join(', ');document.getElementById('editId').textContent=editId; if(p.image){const _pi=document.getElementById('f-image-preview');if(_pi){_pi.src=p.image;_pi.style.display='block';const _pp=document.getElementById('f-img-placeholder');if(_pp)_pp.style.display='none';}} } }
+    ['title','category','tool','purpose','prompt','tips','tags'].forEach(f=>document.getElementById('f-'+f).value='');
+    if(editId){ const p=prompts.find(x=>x.id===editId); if(p){document.getElementById('f-title').value=p.title||'';document.getElementById('f-category').value=p.category||'';document.getElementById('f-tool').value=p.tool||'';document.getElementById('f-purpose').value=p.purpose||'';document.getElementById('f-prompt').value=p.prompt||'';document.getElementById('f-tips').value=p.tips||'';document.getElementById('f-tags').value=(p.tags||[]).join(', ');document.getElementById('editId').textContent=editId;} }
   } else {
     ['title','desc','category','link','note','tags'].forEach(f=>document.getElementById('r-'+f).value='');
     if(editId){ const r=resources.find(x=>x.id===editId); if(r){selectType(r.type); document.getElementById('r-title').value=r.title||'';document.getElementById('r-desc').value=r.desc||'';document.getElementById('r-category').value=r.category||'';document.getElementById('r-link').value=r.link||'';document.getElementById('r-note').value=r.note||'';document.getElementById('r-tags').value=(r.tags||[]).join(', ');document.getElementById('editId').textContent=editId;} }
